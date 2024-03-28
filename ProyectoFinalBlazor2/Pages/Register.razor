@@ -1,0 +1,53 @@
+﻿ @page "/registrarme"
+ @using ProyectoFinalBlazor2.Data.Dtos.Usuario
+ @using ProyectoFinalBlazor2.Data.Services
+ @using Microsoft.EntityFrameworkCore
+ @inject HttpClient Http
+@inject IUsuarioSalonService Service
+@inject NavigationManager Navigation
+
+
+<PageTitle>Registrarme</PageTitle>
+
+<div Class="rz-p-0 rz-p-md-12">
+    <h3><font color="white">Registrarme</font></h3>
+    <RadzenRow Gap="1rem">
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+               <EditForm Model="@usuarioSalonRequestModel" OnValidSubmit="@Post">
+                <RadzenFormField Text="Usuario" >
+                    <RadzenTextBox @bind-Value="@usuarioSalonRequestModel.UserName" />
+                </RadzenFormField>
+                <RadzenFormField Text="Contraseña">
+                     <RadzenPassword @bind-Value="@usuarioSalonRequestModel.Password" />
+                 </RadzenFormField>
+                <RadzenFormField Text="Nombre">
+                    <RadzenTextBox @bind-Value="@usuarioSalonRequestModel.Nombre" />
+                </RadzenFormField>
+                <RadzenFormField Text="Email">
+                    <RadzenTextBox @bind-Value="@usuarioSalonRequestModel.Email" />
+                </RadzenFormField>
+                <RadzenFormField Text="Direccion">
+                    <RadzenTextBox @bind-Value="@usuarioSalonRequestModel.Direccion" />
+                </RadzenFormField>
+                <RadzenFormField Text="RoleID">
+                    <RadzenNumeric @bind-Value="@usuarioSalonRequestModel.RoleId" />
+                </RadzenFormField>
+
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Registrarme"></RadzenButton>
+            </EditForm>
+           </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+@code {
+
+    UsuarioSalonRequestModel usuarioSalonRequestModel = new UsuarioSalonRequestModel();
+
+    public async Task Post()
+    {
+        await Service.PostUsuarioSalon(usuarioSalonRequestModel);
+        Navigation.NavigateTo("/");
+    }
+} 

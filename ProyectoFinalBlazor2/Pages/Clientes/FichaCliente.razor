@@ -1,0 +1,48 @@
+﻿
+@page "/cliente/{fichaClienteEntityId:int}"
+@using ProyectoFinalBlazor2.Data.Dtos.Cliente
+@using Microsoft.EntityFrameworkCore
+@inject IClienteService Service
+@inject HttpClient Http
+<PageTitle>Ficha</PageTitle>
+
+ <div Class="rz-p-0 rz-p-md-12">
+    <a class="btn btn-primary" href="/clientes">Volver</a>
+<RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+       @* <RadzenImage Path="@order?.Employee?.Photo" Style="width: 100px; height: 100px; border-radius: 50%;" /> *@
+        <RadzenStack Gap="0">
+            <RadzenText TextStyle="TextStyle.H6" Class="rz-color-white">Datos del cliente</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Cliente</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1"><b>@(cliente2.NombreCliente + " " + cliente2.ApellidoCliente)</b></RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Telefono</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1"><b>@cliente2.Telefono</b></RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Email</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1"><b>@cliente2.Email</b></RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Fecha de creacion</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1"><b>@cliente2.CreatedDate</b></RadzenText>
+        </RadzenStack>
+    </RadzenStack>
+</RadzenCard>
+</div>
+@* <Registro/> *@
+
+
+@code {
+    Variant variant = Variant.Filled;
+    [Parameter] public int fichaClienteEntityId { get; set; }
+
+    ClienteDto cliente2 = new ClienteDto();
+
+    public async Task <ClienteDto>GetById()
+    {
+        cliente2 = await Service.GetClienteById(fichaClienteEntityId);
+        return cliente2;
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        cliente2 = await Http.GetFromJsonAsync<ClienteDto>($"api/FichaCliente/{fichaClienteEntityId}");
+    }
+    
+}

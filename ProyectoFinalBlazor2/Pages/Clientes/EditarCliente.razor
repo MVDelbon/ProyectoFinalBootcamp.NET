@@ -1,0 +1,49 @@
+﻿@page "/editarCliente/{fichaClienteEntityId:int}"
+@using ProyectoFinalBlazor2.Data.Dtos.Cliente
+@inject HttpClient Http
+@inject IClienteService Service
+
+<div Class="rz-p-0 rz-p-md-12">
+    <h3><font color="white">Editar Cliente</font></h3>
+    <RadzenRow Gap="1rem">
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+                <EditForm Model="@cliente" OnValidSubmit="@PutCliente">
+                    <RadzenFormField Text="Nombre">
+                        <RadzenTextBox @bind-Value="@cliente.NombreCliente" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Apellido">
+                        <RadzenTextBox @bind-Value="@cliente.ApellidoCliente" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Telefono">
+                        <RadzenTextBox @bind-Value="@cliente.Telefono" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Email">
+                        <RadzenTextBox @bind-Value="@cliente.Email" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="SalonId">
+                        <RadzenNumeric @bind-Value="@cliente.UsuarioSalonEntityId" />
+                    </RadzenFormField>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Editar"></RadzenButton>
+                </EditForm>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+
+@code {
+    [Parameter] public int fichaClienteEntityId { get; set; }
+    ClienteDto cliente = new ClienteDto();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        cliente = await Http.GetFromJsonAsync<ClienteDto>($"api/FichaCliente/{fichaClienteEntityId}");
+    }
+
+    public async Task PutCliente()
+    {
+        await Service.PutCliente(cliente, fichaClienteEntityId);
+    }
+
+}

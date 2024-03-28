@@ -1,0 +1,33 @@
+﻿@* <h3>Registro</h3>
+@using RadzenBlazorDemos.Data
+@using RadzenBlazorDemos.Models.Northwind
+@using Microsoft.EntityFrameworkCore
+
+@inherits DbContextPage
+
+<RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+    <RadzenCard class="rz-background-color-primary-light rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));">
+        <RadzenText TextStyle="TextStyle.H6" class="rz-color-on-primary-light"><strong>Fecha</strong></RadzenText>
+        <RadzenRow RowGap="0">
+            <RadzenColumn SizeSM="4">
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Precio</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(order?.ShipCountry)</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-color-on-primary-light rz-display-flex rz-mt-4 rz-mb-0">Descripcion</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-on-primary-light"><b>@(order?.ShipCity)</b></RadzenText>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenCard>
+
+</RadzenCard>
+
+@code {
+    Order order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        order = dbContext.Orders.Include("Customer").Include("Employee").FirstOrDefault();
+    }
+}
+ *@

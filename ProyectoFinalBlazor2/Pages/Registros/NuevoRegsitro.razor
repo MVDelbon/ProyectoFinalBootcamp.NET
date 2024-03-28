@@ -1,0 +1,40 @@
+﻿@page "/NuevoRegistro"
+@inject HttpClient Http
+@inject RegistroService Service
+@using Microsoft.EntityFrameworkCore
+@using ProyectoFinalBlazor2.Data
+@using ProyectoFinalBlazor2.Data.Dtos
+@using ProyectoFinalBlazor2.Data.Dtos.Registro
+@using ProyectoFinalBlazor2.Data.Services
+
+
+<div Class="rz-p-0 rz-p-md-12">
+    <h3><font color="white">Nuevo registro</font></h3>
+    <RadzenRow Gap="1rem">
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+                <EditForm Model="@registro" OnValidSubmit="@PostRegistro">
+                <RadzenFormField Text="Descripcion" >
+                    <RadzenTextBox @bind-Value="@registro.Descripcion" />
+                </RadzenFormField>
+                <RadzenFormField Text="Precio" >
+                    <RadzenNumeric @bind-Value="@registro.Descripcion" />
+                </RadzenFormField>
+                <RadzenFormField Text="ClienteID" >
+                    <RadzenNumeric @bind-Value="@registro.FichaClienteEntityId" />
+                </RadzenFormField>
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Crear"></RadzenButton>
+                </EditForm>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+@code {
+
+    RegistroRequestModel registro = new RegistroRequestModel();
+    public async Task PostRegistro()
+    {
+        await Service.PostRegistroAsync(registro);
+    }
+}
